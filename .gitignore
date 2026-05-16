@@ -10,3 +10,7 @@ node_modules/
 proposals/deck.html
 proposals/deck.pdf
 proposals/deck.pptx
+
+# api/ build
+api/dist
+api/uploads

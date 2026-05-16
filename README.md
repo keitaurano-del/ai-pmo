@@ -37,9 +37,10 @@ ai-pmo/
 │   │       ├── 07-reports/       # 週次・月次報告書
 │   │       └── 08-decisions/     # 意思決定ログ
 │   └── large/                    # 大規模（500名〜）— 骨組みのみ
-├── viewer/                       # 仮想検証環境ビューワー (React + Vite SPA)
+├── viewer/                       # 仮想検証環境ビューワー (React + Vite SPA, Excel/PDF 出力, 編集 UI)
+├── api/                          # ファイル CRUD + 資料アップロード + intake API (Express)
 ├── docs/                         # Obsidian からの同期コピー（自動生成、直接編集禁止）
-├── proposals/                    # 顧客向け提案書テンプレート（未着手）
+├── proposals/                    # 顧客向け提案書テンプレート + Marp スタイル
 ├── render.yaml                   # Render Static Site デプロイ Blueprint
 ├── package.json                  # root: tsx + tooling
 └── scripts/

@@ -1,11 +1,20 @@
-# Render Blueprint — AI PMO Viewer
+# Render Blueprint — AI PMO Viewer + API
 # https://render.com/docs/blueprint-spec
 #
 # Render dashboard で "New +" → "Blueprint" → リポ keitaurano-del/ai-pmo を選択すると
-# 本ファイルを基に Static Site が作成される。
+# 本ファイルを基に Static Site (viewer) + Web Service (api) が作成される。
 #
-# サイト URL は自動採番（例: https://ai-pmo-viewer.onrender.com）
+# URL（自動採番）:
+#   viewer: https://ai-pmo-viewer.onrender.com
+#   api:    https://ai-pmo-api.onrender.com
+#
 # Push 連動: main ブランチへの push で自動再デプロイ
+#
+# 注意:
+#  - api の ANTHROPIC_API_KEY は Render dashboard で sync: false 設定（手動入力）
+#  - api はファイル書き込みするため、本番運用では Persistent Disk 必須
+#    (無料/Starter は ephemeral)
+#  - viewer の VITE_API_URL は build 時に api の URL を埋め込み
 services:
   - type: web
     name: ai-pmo-viewer
@@ -14,6 +23,9 @@ services:
     buildCommand: npm ci && npm run build
     staticPublishPath: ./dist
     pullRequestPreviewsEnabled: true
+    envVars:
+      - key: VITE_API_URL
+        sync: false  # Render dashboard で https://ai-pmo-api.onrender.com を設定
     headers:
       - path: /*
         name: X-Frame-Options
@@ -25,3 +37,23 @@ services:
       - type: rewrite
         source: /*
         destination: /index.html
+
+  - type: web
+    name: ai-pmo-api
+    runtime: node
+    rootDir: api
+    plan: starter  # ファイル書き込みあり、free は ephemeral でデータ消える
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: 22
+      - key: PORT
+        value: 3001
+      - key: ANTHROPIC_API_KEY
+        sync: false  # Render dashboard で手動設定
+    # disk:
+    #   name: ai-pmo-data
+    #   mountPath: /opt/render/project/src/case-studies
+    #   sizeGB: 1

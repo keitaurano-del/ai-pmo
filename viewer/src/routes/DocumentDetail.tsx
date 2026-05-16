@@ -1,6 +1,6 @@
 import { Link, useParams } from 'react-router-dom';
 import { getCase } from '@/lib/data';
-import { Markdown } from '@/lib/markdown';
+import { EditableMarkdown } from '@/components/EditableMarkdown';
 
 interface Props {
   kind: 'meeting' | 'report';
@@ -13,6 +13,7 @@ export default function DocumentDetail({ kind }: Props) {
   const doc = list.find((d) => d.slug === slug);
   const backTo = kind === 'meeting' ? `/${c.slug}/meetings` : `/${c.slug}/reports`;
   const backLabel = kind === 'meeting' ? '議事録一覧へ' : '報告書一覧へ';
+  const sectionDir = kind === 'meeting' ? '04-meetings' : '07-reports';
 
   if (!doc) {
     return (
@@ -46,7 +47,11 @@ export default function DocumentDetail({ kind }: Props) {
         </div>
       </div>
       <div className="card p-6">
-        <Markdown source={doc.body} />
+        <EditableMarkdown
+          caseSlug={c.slug}
+          relPath={`${sectionDir}/${doc.filename}`}
+          initialBody={doc.body}
+        />
       </div>
     </article>
   );

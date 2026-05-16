@@ -19,6 +19,7 @@ export default function Layout() {
     { to: `/${current.slug}/meetings`, label: '議事録' },
     { to: `/${current.slug}/reports`, label: '報告書' },
     { to: `/${current.slug}/charter`, label: '憲章/コンテキスト' },
+    { to: `/${current.slug}/upload`, label: '📤 資料投入' },
     { to: '/methodology', label: 'Methodology' },
     { to: '/operations', label: '運営ガイド' },
   ];

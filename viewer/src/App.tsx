@@ -12,6 +12,7 @@ import Charter from './routes/Charter';
 import DocumentDetail from './routes/DocumentDetail';
 import Methodology from './routes/Methodology';
 import Operations from './routes/Operations';
+import Upload from './routes/Upload';
 import { DEFAULT_CASE } from './lib/data';
 
 export default function App() {
@@ -32,6 +33,7 @@ export default function App() {
         <Route path=":caseSlug/reports" element={<Reports />} />
         <Route path=":caseSlug/reports/:slug" element={<DocumentDetail kind="report" />} />
         <Route path=":caseSlug/charter" element={<Charter />} />
+        <Route path=":caseSlug/upload" element={<Upload />} />
         <Route path="*" element={<Navigate to={`/${DEFAULT_CASE}`} replace />} />
       </Route>
     </Routes>
