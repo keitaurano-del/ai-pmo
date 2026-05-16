@@ -37,8 +37,10 @@ ai-pmo/
 │   │       ├── 07-reports/       # 週次・月次報告書
 │   │       └── 08-decisions/     # 意思決定ログ
 │   └── large/                    # 大規模（500名〜）— 骨組みのみ
+├── viewer/                       # 仮想検証環境ビューワー (React + Vite SPA)
 ├── docs/                         # Obsidian からの同期コピー（自動生成、直接編集禁止）
 ├── proposals/                    # 顧客向け提案書テンプレート（未着手）
+├── render.yaml                   # Render Static Site デプロイ Blueprint
 └── scripts/
     └── sync-from-obsidian.sh     # docs/ を Obsidian vault から同期
 ```
@@ -50,6 +52,14 @@ ai-pmo/
 - **シナリオ**: 中堅 SIer「アクロス・システムズ株式会社」が「大手小売 M-Mart 基幹システム刷新案件 NEXUS-RTL」に AI PMO PoC を導入した想定
 - **基準日**: 2026-05-15（PoC 開始から第7週、12週中）
 - **検証で確認**: AI PMO 導入後の WBS / 議事録 / 課題管理 / 週次報告書の見え方、既存 PMO との役割分担
+
+### ビューワー (web で見たい場合)
+
+```bash
+cd viewer && npm install && npm run dev   # http://localhost:5173
+```
+
+Render Static Site としてもデプロイ可能。詳細は [viewer/README.md](./viewer/README.md) と `render.yaml` を参照。
 
 ## ワークフロー
 

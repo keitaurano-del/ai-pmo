@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  }
+}
+
+@layer components {
+  .badge {
+    @apply inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium;
+  }
+  .badge-red {
+    @apply bg-rose-100 text-rose-800;
+  }
+  .badge-amber {
+    @apply bg-amber-100 text-amber-800;
+  }
+  .badge-emerald {
+    @apply bg-emerald-100 text-emerald-800;
+  }
+  .badge-slate {
+    @apply bg-slate-100 text-slate-700;
+  }
+  .badge-blue {
+    @apply bg-brand-100 text-brand-800;
+  }
+
+  .card {
+    @apply rounded-xl border border-slate-200 bg-white shadow-sm;
+  }
+
+  .prose-md h1 {
+    @apply text-2xl font-bold mt-6 mb-3;
+  }
+  .prose-md h2 {
+    @apply text-xl font-semibold mt-5 mb-2 border-b border-slate-200 pb-1;
+  }
+  .prose-md h3 {
+    @apply text-base font-semibold mt-4 mb-1;
+  }
+  .prose-md p {
+    @apply my-2 leading-relaxed text-slate-700;
+  }
+  .prose-md ul {
+    @apply list-disc pl-5 my-2;
+  }
+  .prose-md ol {
+    @apply list-decimal pl-5 my-2;
+  }
+  .prose-md li {
+    @apply my-1 text-slate-700;
+  }
+  .prose-md code {
+    @apply rounded bg-slate-100 px-1 py-0.5 text-[0.85em] font-mono text-slate-800;
+  }
+  .prose-md pre {
+    @apply rounded-lg bg-slate-900 text-slate-100 p-4 overflow-x-auto my-3 text-sm;
+  }
+  .prose-md pre code {
+    @apply bg-transparent p-0 text-slate-100;
+  }
+  .prose-md table {
+    @apply w-full text-sm my-3 border-collapse;
+  }
+  .prose-md th {
+    @apply border border-slate-200 bg-slate-100 px-2 py-1 text-left font-semibold;
+  }
+  .prose-md td {
+    @apply border border-slate-200 px-2 py-1 align-top;
+  }
+  .prose-md blockquote {
+    @apply border-l-4 border-slate-300 pl-3 italic text-slate-600 my-3;
+  }
+  .prose-md a {
+    @apply text-brand-600 hover:underline;
+  }
+  .prose-md hr {
+    @apply my-6 border-slate-200;
+  }
+}
