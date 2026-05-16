@@ -6,9 +6,15 @@
   "description": "AI PMO 導入支援サービス — リポジトリ root（ツール・CLI 用）",
   "scripts": {
     "init": "tsx scripts/bootstrap-client.ts",
-    "sync:obsidian": "bash scripts/sync-from-obsidian.sh"
+    "sync:obsidian": "bash scripts/sync-from-obsidian.sh",
+    "agent": "tsx scripts/agents/run.ts",
+    "deck:html": "marp proposals/template-deck.md -o proposals/deck.html --allow-local-files",
+    "deck:pdf": "marp proposals/template-deck.md --pdf -o proposals/deck.pdf --allow-local-files",
+    "deck:pptx": "marp proposals/template-deck.md --pptx -o proposals/deck.pptx --allow-local-files"
   },
   "devDependencies": {
+    "@anthropic-ai/sdk": "^0.96.0",
+    "@marp-team/marp-cli": "^4.4.0",
     "@types/node": "^22.7.5",
     "tsx": "^4.19.1",
     "typescript": "^5.6.2"

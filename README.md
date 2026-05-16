@@ -46,6 +46,10 @@ ai-pmo/
     ├── bootstrap-client.ts       # 新規クライアント env 一発生成 CLI
     ├── templates/                # CLI 用 Mustache 風テンプレ群
     ├── lib/                      # CLI 内部ライブラリ (render, prompt)
+    ├── agents/                   # AI PMO エージェント実装 (Claude API)
+    │   ├── run.ts                # npm run agent エントリ
+    │   ├── scribe.ts / reporter.ts
+    │   └── lib/{client,io}.ts
     ├── sync-from-obsidian.sh     # docs/ を Obsidian vault から同期
     └── README.md                 # ツール詳細
 ```
@@ -76,6 +80,26 @@ npm run init -- --interactive      # 対話モード
 npm run init -- --slug acme --name "ACME株式会社" --size medium --pm "田中 一郎"
 ```
 → `case-studies/<slug>/` 配下に 18 ファイルのスケルトンが生成される。詳細は [scripts/README.md](./scripts/README.md)
+
+### AI エージェントを実行する
+```bash
+# 動作確認（API キー不要、プロンプトと出力先のみ表示）
+npm run agent -- run scribe --client medium --dry-run
+npm run agent -- run reporter --client medium --dry-run
+
+# 本実行（要 ANTHROPIC_API_KEY）
+export ANTHROPIC_API_KEY=sk-ant-...
+npm run agent -- run reporter --client medium
+```
+詳細: [scripts/agents/README.md](./scripts/agents/README.md)
+
+### 提案書を PDF / HTML / PPTX に書き出す
+```bash
+npm run deck:html        # → proposals/deck.html
+npm run deck:pdf         # → proposals/deck.pdf (要 Chromium)
+npm run deck:pptx        # → proposals/deck.pptx
+```
+`proposals/template-deck.md` 内の `{{プレースホルダ}}` を提案先ごとに置換して使う。
 
 ### Obsidian の知見を取り込む
 ```bash

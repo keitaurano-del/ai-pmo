@@ -1,18 +1,104 @@
 ---
-title: AI PMO 導入提案書
-client: "{{クライアント企業名}}"
-date: "{{提案日}}"
-author: "{{ベンダー企業名}}"
+marp: true
+theme: default
+size: 16:9
+paginate: true
+header: 'AI PMO 導入提案'
+footer: '© {{ベンダー企業名}} — Confidential'
+style: |
+  section {
+    font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', sans-serif;
+    background: #ffffff;
+    color: #0f172a;
+    font-size: 24px;
+    padding: 60px 80px;
+  }
+  section.lead {
+    background: linear-gradient(135deg, #3251f0 0%, #1d2e94 100%);
+    color: #ffffff;
+    text-align: center;
+    justify-content: center;
+  }
+  section.lead h1 {
+    font-size: 64px;
+    border: none;
+  }
+  section.lead h2, section.lead p, section.lead strong {
+    color: #ffffff;
+  }
+  h1 {
+    color: #1d2e94;
+    border-bottom: 4px solid #3251f0;
+    padding-bottom: 10px;
+    font-size: 40px;
+  }
+  h2 {
+    color: #283fcc;
+    font-size: 32px;
+  }
+  h3 {
+    color: #1d2e94;
+    font-size: 24px;
+  }
+  table {
+    font-size: 18px;
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 16px;
+  }
+  th {
+    background: #eef4ff;
+    color: #1d2e94;
+    padding: 8px 12px;
+    border: 1px solid #cbd5e1;
+    text-align: left;
+  }
+  td {
+    padding: 8px 12px;
+    border: 1px solid #e2e8f0;
+  }
+  code {
+    background: #f1f5f9;
+    color: #1d2e94;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+  pre {
+    background: #0f172a;
+    color: #f8fafc;
+    padding: 16px;
+    border-radius: 8px;
+    font-size: 0.85em;
+  }
+  pre code {
+    background: transparent;
+    color: inherit;
+  }
+  strong {
+    color: #1d2e94;
+  }
+  blockquote {
+    border-left: 4px solid #3251f0;
+    padding-left: 16px;
+    color: #475569;
+    font-style: italic;
+  }
+  footer, header {
+    color: #64748b;
+    font-size: 14px;
+  }
 ---
 
-<!-- 各 --- は 1 スライド区切り。reveal.js / Marp で書き出し可能。 -->
-<!-- 角括弧 [...] は提案先ごとに差し替える項目。 -->
+<!-- _class: lead -->
+<!-- _footer: '' -->
+<!-- _paginate: false -->
 
 # AI PMO 導入提案
 
-**{{クライアント企業名}} 御中**
+## {{クライアント企業名}} 御中
 
-{{ベンダー企業名}}
+**{{ベンダー企業名}}**
 {{提案日}}
 
 ---

@@ -5,3 +5,8 @@ node_modules/
 .env.*
 !.env.example
 *.tsbuildinfo
+
+# Marp 生成物
+proposals/deck.html
+proposals/deck.pdf
+proposals/deck.pptx
