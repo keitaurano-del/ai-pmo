@@ -1,17 +1,45 @@
 import { useState } from 'react';
-import { charter, contexts } from '@/lib/data';
+import { useParams } from 'react-router-dom';
+import { getCase } from '@/lib/data';
 import { Markdown } from '@/lib/markdown';
+import { EmptyState } from '@/components/EmptyState';
 
-type Tab = 'charter' | 'stakeholders' | 'glossary';
+type Tab = 'charter' | 'stakeholders' | 'glossary' | 'integrations';
 
 export default function Charter() {
+  const { caseSlug } = useParams();
+  const c = getCase(caseSlug);
   const [tab, setTab] = useState<Tab>('charter');
-  const charterDoc = charter[0];
-  const stakeholdersDoc = contexts.find((d) => d.slug === 'stakeholders');
-  const glossaryDoc = contexts.find((d) => d.slug === 'glossary');
+  const charterDoc = c.charter[0];
+  const stakeholdersDoc = c.contexts.find((d) => d.slug === 'stakeholders');
+  const glossaryDoc = c.contexts.find((d) => d.slug === 'glossary');
+  const integrationsDoc = c.contexts.find((d) => d.slug === 'integrations');
 
   const current =
-    tab === 'charter' ? charterDoc : tab === 'stakeholders' ? stakeholdersDoc : glossaryDoc;
+    tab === 'charter'
+      ? charterDoc
+      : tab === 'stakeholders'
+        ? stakeholdersDoc
+        : tab === 'glossary'
+          ? glossaryDoc
+          : integrationsDoc;
+
+  if (!charterDoc && !stakeholdersDoc && !glossaryDoc && !integrationsDoc) {
+    return (
+      <EmptyState
+        title="憲章・コンテキストなし"
+        description="このケースのプロジェクト憲章・コンテキストはまだ作成されていません。"
+        hint="01-charter/ と 00-context/ 配下に Markdown を追加してください。"
+      />
+    );
+  }
+
+  const tabs: Array<{ key: Tab; label: string; disabled: boolean }> = [
+    { key: 'charter', label: 'プロジェクト憲章', disabled: !charterDoc },
+    { key: 'stakeholders', label: 'ステークホルダー', disabled: !stakeholdersDoc },
+    { key: 'glossary', label: '用語集', disabled: !glossaryDoc },
+    { key: 'integrations', label: 'データ統合', disabled: !integrationsDoc },
+  ];
 
   return (
     <div className="space-y-4">
@@ -20,19 +48,20 @@ export default function Charter() {
         <p className="text-sm text-slate-500">人間が作成・管理。AI PMO は読み込みコンテキストとして利用</p>
       </div>
       <div className="inline-flex rounded-lg border border-slate-200 bg-white overflow-hidden">
-        {(
-          [
-            ['charter', 'プロジェクト憲章'],
-            ['stakeholders', 'ステークホルダー'],
-            ['glossary', '用語集'],
-          ] as const
-        ).map(([k, label]) => (
+        {tabs.map((t) => (
           <button
-            key={k}
-            className={`px-4 py-1.5 text-sm ${tab === k ? 'bg-brand-600 text-white' : 'text-slate-700'}`}
-            onClick={() => setTab(k)}
+            key={t.key}
+            disabled={t.disabled}
+            className={`px-4 py-1.5 text-sm ${
+              tab === t.key
+                ? 'bg-brand-600 text-white'
+                : t.disabled
+                  ? 'text-slate-300 cursor-not-allowed'
+                  : 'text-slate-700'
+            }`}
+            onClick={() => !t.disabled && setTab(t.key)}
           >
-            {label}
+            {t.label}
           </button>
         ))}
       </div>
@@ -41,7 +70,7 @@ export default function Charter() {
           <Markdown source={current.body} />
         </div>
       ) : (
-        <div className="card p-5 text-slate-500">未登録</div>
+        <div className="card p-5 text-slate-500">このタブのドキュメントは未登録</div>
       )}
     </div>
   );

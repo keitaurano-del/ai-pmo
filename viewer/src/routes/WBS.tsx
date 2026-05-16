@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import { wbsTree, wbsFlat, WbsRow } from '@/lib/data';
+import { useParams } from 'react-router-dom';
+import { getCase, WbsRow } from '@/lib/data';
+import { EmptyState } from '@/components/EmptyState';
 
 type ViewMode = 'tree' | 'table';
 
@@ -71,8 +73,22 @@ function TreeNode({ row }: { row: WbsRow }) {
 }
 
 export default function WBS() {
+  const { caseSlug } = useParams();
+  const c = getCase(caseSlug);
+  const { wbsTree, wbsFlat } = c;
+
   const [mode, setMode] = useState<ViewMode>('tree');
   const [filter, setFilter] = useState<string>('all');
+
+  if (wbsFlat.length === 0) {
+    return (
+      <EmptyState
+        title="WBS データなし"
+        description="このケースには WBS データが取り込まれていません。"
+        hint="reporter-agent が Backlog から定期同期するか、wbs.csv に直接記入してください。"
+      />
+    );
+  }
 
   const filtered = wbsFlat.filter((r) => (filter === 'all' ? true : r.status === filter));
 

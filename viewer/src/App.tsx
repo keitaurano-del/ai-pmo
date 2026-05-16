@@ -11,24 +11,26 @@ import Reports from './routes/Reports';
 import Charter from './routes/Charter';
 import DocumentDetail from './routes/DocumentDetail';
 import Methodology from './routes/Methodology';
+import { DEFAULT_CASE } from './lib/data';
 
 export default function App() {
   return (
     <Routes>
       <Route element={<Layout />}>
-        <Route index element={<Dashboard />} />
-        <Route path="/wbs" element={<WBS />} />
-        <Route path="/schedule" element={<Schedule />} />
-        <Route path="/issues" element={<Issues />} />
-        <Route path="/risks" element={<Risks />} />
-        <Route path="/decisions" element={<Decisions />} />
-        <Route path="/meetings" element={<Meetings />} />
-        <Route path="/meetings/:slug" element={<DocumentDetail kind="meeting" />} />
-        <Route path="/reports" element={<Reports />} />
-        <Route path="/reports/:slug" element={<DocumentDetail kind="report" />} />
-        <Route path="/charter" element={<Charter />} />
+        <Route index element={<Navigate to={`/${DEFAULT_CASE}`} replace />} />
         <Route path="/methodology" element={<Methodology />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path=":caseSlug" element={<Dashboard />} />
+        <Route path=":caseSlug/wbs" element={<WBS />} />
+        <Route path=":caseSlug/schedule" element={<Schedule />} />
+        <Route path=":caseSlug/issues" element={<Issues />} />
+        <Route path=":caseSlug/risks" element={<Risks />} />
+        <Route path=":caseSlug/decisions" element={<Decisions />} />
+        <Route path=":caseSlug/meetings" element={<Meetings />} />
+        <Route path=":caseSlug/meetings/:slug" element={<DocumentDetail kind="meeting" />} />
+        <Route path=":caseSlug/reports" element={<Reports />} />
+        <Route path=":caseSlug/reports/:slug" element={<DocumentDetail kind="report" />} />
+        <Route path=":caseSlug/charter" element={<Charter />} />
+        <Route path="*" element={<Navigate to={`/${DEFAULT_CASE}`} replace />} />
       </Route>
     </Routes>
   );

@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react';
-import { issues, issueDocs } from '@/lib/data';
+import { useParams } from 'react-router-dom';
+import { getCase } from '@/lib/data';
 import { Markdown } from '@/lib/markdown';
+import { EmptyState } from '@/components/EmptyState';
 
 function priorityBadge(p: string) {
   if (p === 'High') return <span className="badge badge-red">High</span>;
@@ -16,6 +18,10 @@ function statusBadge(s: string) {
 }
 
 export default function Issues() {
+  const { caseSlug } = useParams();
+  const c = getCase(caseSlug);
+  const { issues, issueDocs } = c;
+
   const [showClosed, setShowClosed] = useState(false);
   const [priority, setPriority] = useState<'all' | 'High' | 'Mid' | 'Low'>('all');
   const [category, setCategory] = useState<string>('all');
@@ -23,7 +29,7 @@ export default function Issues() {
 
   const categories = useMemo(
     () => Array.from(new Set(issues.map((i) => i.category))).sort(),
-    [],
+    [issues],
   );
 
   const filtered = issues
@@ -48,9 +54,19 @@ export default function Issues() {
       low: open.filter((i) => i.priority === 'Low').length,
       closed: issues.length - open.length,
     };
-  }, []);
+  }, [issues]);
 
   const detailDoc = issueDocs[0];
+
+  if (issues.length === 0) {
+    return (
+      <EmptyState
+        title="課題データなし"
+        description="このケースには課題データが取り込まれていません。"
+        hint="watcher-agent が Backlog / 議事録から自動起票するか、issues.csv に直接記入してください。"
+      />
+    );
+  }
 
   return (
     <div className="space-y-4">
@@ -82,9 +98,9 @@ export default function Issues() {
             className="text-sm border border-slate-200 rounded-lg px-2 py-1.5 bg-white"
           >
             <option value="all">全カテゴリ</option>
-            {categories.map((c) => (
-              <option key={c} value={c}>
-                {c}
+            {categories.map((c2) => (
+              <option key={c2} value={c2}>
+                {c2}
               </option>
             ))}
           </select>

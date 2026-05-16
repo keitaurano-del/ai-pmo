@@ -1,39 +1,78 @@
-import { NavLink, Outlet } from 'react-router-dom';
-import { project } from '@/lib/data';
-
-const nav = [
-  { to: '/', label: 'ダッシュボード', end: true },
-  { to: '/wbs', label: 'WBS' },
-  { to: '/schedule', label: 'スケジュール' },
-  { to: '/issues', label: '課題' },
-  { to: '/risks', label: 'リスク' },
-  { to: '/decisions', label: '意思決定' },
-  { to: '/meetings', label: '議事録' },
-  { to: '/reports', label: '報告書' },
-  { to: '/charter', label: '憲章/コンテキスト' },
-  { to: '/methodology', label: 'Methodology' },
-];
+import { NavLink, Outlet, useNavigate, useParams, useLocation } from 'react-router-dom';
+import { caseList, getCase, DEFAULT_CASE } from '@/lib/data';
 
 export default function Layout() {
+  const { caseSlug } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const current = getCase(caseSlug ?? DEFAULT_CASE);
+  const isMethodology = location.pathname.startsWith('/methodology');
+
+  const nav = [
+    { to: `/${current.slug}`, label: 'ダッシュボード', end: true },
+    { to: `/${current.slug}/wbs`, label: 'WBS' },
+    { to: `/${current.slug}/schedule`, label: 'スケジュール' },
+    { to: `/${current.slug}/issues`, label: '課題' },
+    { to: `/${current.slug}/risks`, label: 'リスク' },
+    { to: `/${current.slug}/decisions`, label: '意思決定' },
+    { to: `/${current.slug}/meetings`, label: '議事録' },
+    { to: `/${current.slug}/reports`, label: '報告書' },
+    { to: `/${current.slug}/charter`, label: '憲章/コンテキスト' },
+    { to: '/methodology', label: 'Methodology' },
+  ];
+
+  const onCaseChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newSlug = e.target.value;
+    // 現在 sub-page にいる場合、できれば同じ sub-page に遷移
+    if (isMethodology) {
+      navigate(`/${newSlug}`);
+      return;
+    }
+    const segments = location.pathname.split('/').filter(Boolean);
+    const subPath = segments.length > 1 ? segments.slice(1).join('/') : '';
+    navigate(subPath ? `/${newSlug}/${subPath}` : `/${newSlug}`);
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <header className="border-b border-slate-200 bg-white sticky top-0 z-30">
-        <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between gap-4 flex-wrap">
           <div className="flex items-center gap-3">
             <div className="h-9 w-9 rounded-lg bg-brand-600 text-white grid place-items-center font-bold text-sm">
               AI
             </div>
             <div>
-              <div className="text-sm text-slate-500 leading-tight">AI PMO ビューワー（中規模ケース）</div>
+              <div className="text-sm text-slate-500 leading-tight">AI PMO ビューワー</div>
               <div className="font-semibold leading-tight">
-                {project.name} — {project.fullName}
+                {current.project.name}
+                {current.project.fullName ? ` — ${current.project.fullName}` : ''}
               </div>
             </div>
           </div>
-          <div className="hidden md:flex flex-col items-end text-xs text-slate-500">
-            <div>クライアント: <span className="text-slate-800 font-medium">{project.client}</span></div>
-            <div>ベンダー: <span className="text-slate-800 font-medium">{project.vendor}</span></div>
-            <div>基準日: <span className="text-slate-800 font-medium">{project.referenceDate}</span></div>
+          <div className="flex items-center gap-4">
+            <div className="hidden lg:flex flex-col items-end text-xs text-slate-500">
+              <div>クライアント: <span className="text-slate-800 font-medium">{current.project.client}</span></div>
+              <div>ベンダー: <span className="text-slate-800 font-medium">{current.project.vendor}</span></div>
+              {current.project.referenceDate && (
+                <div>基準日: <span className="text-slate-800 font-medium">{current.project.referenceDate}</span></div>
+              )}
+            </div>
+            <div className="flex items-center gap-2 text-sm">
+              <label htmlFor="case-select" className="text-slate-500 text-xs">ケース:</label>
+              <select
+                id="case-select"
+                value={isMethodology ? '' : current.slug}
+                onChange={onCaseChange}
+                className="border border-slate-200 rounded-lg px-2 py-1.5 bg-white text-sm min-w-[180px]"
+              >
+                {isMethodology && <option value="">(Methodology)</option>}
+                {caseList.map((c) => (
+                  <option key={c.slug} value={c.slug}>
+                    {c.slug === 'medium' ? '★ ' : ''}{c.displayName} ({c.slug})
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
         <nav className="max-w-7xl mx-auto px-6 flex gap-1 overflow-x-auto">
@@ -61,10 +100,10 @@ export default function Layout() {
         </div>
       </main>
       <footer className="border-t border-slate-200 bg-white">
-        <div className="max-w-7xl mx-auto px-6 py-4 text-xs text-slate-500 flex justify-between">
+        <div className="max-w-7xl mx-auto px-6 py-4 text-xs text-slate-500 flex justify-between flex-wrap gap-2">
           <div>
-            AI PMO PoC ビューワー · 仮想クライアント環境 · データソース:{' '}
-            <code className="text-slate-700">case-studies/medium/client-env/</code>
+            AI PMO ビューワー · {caseList.length} ケース読み込み済 · データソース:{' '}
+            <code className="text-slate-700">case-studies/{current.slug}/client-env/</code>
           </div>
           <div>
             <a className="text-brand-600 hover:underline" href="https://github.com/keitaurano-del/ai-pmo" target="_blank" rel="noreferrer">

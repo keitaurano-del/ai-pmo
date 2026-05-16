@@ -1,5 +1,5 @@
 import { Link, useParams } from 'react-router-dom';
-import { meetings, reports } from '@/lib/data';
+import { getCase } from '@/lib/data';
 import { Markdown } from '@/lib/markdown';
 
 interface Props {
@@ -7,10 +7,11 @@ interface Props {
 }
 
 export default function DocumentDetail({ kind }: Props) {
-  const { slug } = useParams();
-  const list = kind === 'meeting' ? meetings : reports;
+  const { slug, caseSlug } = useParams();
+  const c = getCase(caseSlug);
+  const list = kind === 'meeting' ? c.meetings : c.reports;
   const doc = list.find((d) => d.slug === slug);
-  const backTo = kind === 'meeting' ? '/meetings' : '/reports';
+  const backTo = kind === 'meeting' ? `/${c.slug}/meetings` : `/${c.slug}/reports`;
   const backLabel = kind === 'meeting' ? '議事録一覧へ' : '報告書一覧へ';
 
   if (!doc) {
