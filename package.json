@@ -1,0 +1,16 @@
+{
+  "name": "ai-pmo",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "AI PMO 導入支援サービス — リポジトリ root（ツール・CLI 用）",
+  "scripts": {
+    "init": "tsx scripts/bootstrap-client.ts",
+    "sync:obsidian": "bash scripts/sync-from-obsidian.sh"
+  },
+  "devDependencies": {
+    "@types/node": "^22.7.5",
+    "tsx": "^4.19.1",
+    "typescript": "^5.6.2"
+  }
+}

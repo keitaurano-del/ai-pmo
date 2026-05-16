@@ -41,8 +41,13 @@ ai-pmo/
 ├── docs/                         # Obsidian からの同期コピー（自動生成、直接編集禁止）
 ├── proposals/                    # 顧客向け提案書テンプレート（未着手）
 ├── render.yaml                   # Render Static Site デプロイ Blueprint
+├── package.json                  # root: tsx + tooling
 └── scripts/
-    └── sync-from-obsidian.sh     # docs/ を Obsidian vault から同期
+    ├── bootstrap-client.ts       # 新規クライアント env 一発生成 CLI
+    ├── templates/                # CLI 用 Mustache 風テンプレ群
+    ├── lib/                      # CLI 内部ライブラリ (render, prompt)
+    ├── sync-from-obsidian.sh     # docs/ を Obsidian vault から同期
+    └── README.md                 # ツール詳細
 ```
 
 ## 仮想検証環境について
@@ -63,9 +68,18 @@ Render Static Site としてもデプロイ可能。詳細は [viewer/README.md]
 
 ## ワークフロー
 
+### 新規クライアント環境を 1 コマンドで作る
+```bash
+npm install                        # 初回のみ
+npm run init -- --interactive      # 対話モード
+# あるいは
+npm run init -- --slug acme --name "ACME株式会社" --size medium --pm "田中 一郎"
+```
+→ `case-studies/<slug>/` 配下に 18 ファイルのスケルトンが生成される。詳細は [scripts/README.md](./scripts/README.md)
+
 ### Obsidian の知見を取り込む
 ```bash
-bash scripts/sync-from-obsidian.sh
+npm run sync:obsidian
 git add docs/
 git commit -m "docs: sync from obsidian"
 ```

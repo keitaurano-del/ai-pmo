@@ -1,0 +1,25 @@
+# {{client_name}} — AI PMO 検証環境
+
+`scripts/bootstrap-client.ts` で生成された AI PMO クライアント環境のスケルトン。
+
+## 設定サマリ
+
+| 項目 | 内容 |
+|------|------|
+| クライアント | {{client_name}} |
+| 業種 | {{client_industry}} |
+| 規模セグメント | {{size_segment}} |
+| ベンダー（御社） | {{vendor_name}} |
+| プロジェクト | {{project_name}} — {{project_full_name}} |
+| PM | {{pm_name}} |
+| PoC 期間 | {{poc_start}} 〜 {{poc_end}} |
+| カットオーバー予定 | {{cutover_date}} |
+| 生成日時 | {{generated_at}} |
+
+## 次のアクション
+
+1. `company-profile.md` を実データで埋める（ヒアリング結果）
+2. `ai-pmo-deployment.md` の導入計画を確定
+3. `client-env/00-context/integrations.md` に各 SaaS の認証情報設計
+4. `client-env/01-charter/project-charter.md` をクライアントと合意
+5. AI エージェント（reporter / scribe / watcher / triager）の初期実行
