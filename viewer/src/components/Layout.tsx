@@ -11,6 +11,7 @@ const nav = [
   { to: '/meetings', label: '議事録' },
   { to: '/reports', label: '報告書' },
   { to: '/charter', label: '憲章/コンテキスト' },
+  { to: '/methodology', label: 'Methodology' },
 ];
 
 export default function Layout() {

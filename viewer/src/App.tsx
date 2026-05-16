@@ -10,6 +10,7 @@ import Meetings from './routes/Meetings';
 import Reports from './routes/Reports';
 import Charter from './routes/Charter';
 import DocumentDetail from './routes/DocumentDetail';
+import Methodology from './routes/Methodology';
 
 export default function App() {
   return (
@@ -26,6 +27,7 @@ export default function App() {
         <Route path="/reports" element={<Reports />} />
         <Route path="/reports/:slug" element={<DocumentDetail kind="report" />} />
         <Route path="/charter" element={<Charter />} />
+        <Route path="/methodology" element={<Methodology />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>
