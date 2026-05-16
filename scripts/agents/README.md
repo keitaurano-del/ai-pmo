@@ -4,12 +4,49 @@
 
 ## 実装済みエージェント
 
-| 名前 | 入力 | 出力 |
-|------|------|------|
-| `scribe` | 会議 transcript (txt) | `client-env/04-meetings/YYYY-MM-DD_generated.md` |
-| `reporter` | （case の全成果物を自動収集） | `client-env/07-reports/YYYY-Wnn_weekly-report.md` |
+| 名前 | 入力 | 出力 | 用途 |
+|------|------|------|------|
+| `intake` | PDF / md / txt（複数） | charter / wbs / stakeholders / risks / glossary / decisions の 7 セクション一括生成 | 既存資料あり → 初期データ投入 |
+| `discovery` | 対話型ヒアリング（17問） | 同上 | 既存資料なし → ヒアリングから初期データ |
+| `scribe` | 会議 transcript (txt) | `client-env/04-meetings/YYYY-MM-DD_generated.md` | 会議終了 → 議事録 |
+| `reporter` | （case の全成果物を自動収集） | `client-env/07-reports/YYYY-Wnn_weekly-report.md` | 定期 → 週次報告 |
 
 未実装（agents/ にプロンプトのみ）: `watcher`, `triager`
+
+## データ投入フロー全体図
+
+```
+[ 契約直後 ]
+  ┌──────────────────┐    ┌──────────────────┐
+  │ クライアント支給     │   │ PM/PMO への       │
+  │ 資料 (RFP, 提案書) │   │ ヒアリング         │
+  └────────┬─────────┘    └────────┬─────────┘
+           ↓                       ↓
+  ┌────────────────┐      ┌────────────────┐
+  │ intake-agent   │      │ discovery-agent│
+  └────────┬───────┘      └────────┬───────┘
+           └───────────┬───────────┘
+                       ↓
+           ┌───────────────────────┐
+           │ client-env/ 初期データ │
+           │ - charter             │
+           │ - wbs                 │
+           │ - stakeholders        │
+           │ - risks               │
+           │ - glossary            │
+           │ - decisions           │
+           │ - intake-notes        │
+           └───────────┬───────────┘
+                       ↓ 人間レビュー (30分)
+[ 運用フェーズ ]
+                       ↓
+           ┌───────────────────────┐
+           │ scribe (会議 → 議事録)  │ ← Zoom Webhook
+           │ reporter (週次報告)     │ ← cron 月曜 6:00
+           │ watcher (異常検知)      │ ← cron 1h ごと（未実装）
+           │ triager (課題分類)      │ ← 新規課題発生時（未実装）
+           └───────────────────────┘
+```
 
 ## 使い方
 
@@ -17,19 +54,30 @@
 # 登録エージェント一覧
 npm run agent -- list
 
-# scribe を dry-run（API キー不要、プロンプトと出力先のみ表示）
-npm run agent -- run scribe --client medium --dry-run
+# 【初期投入】既存資料から一括生成
+npm run agent -- run intake --client acme \
+  --input rfp.pdf --input proposal.docx.md --input requirements.md --dry-run
 
-# scribe を本実行（要 ANTHROPIC_API_KEY）
-export ANTHROPIC_API_KEY=sk-ant-...
-npm run agent -- run scribe --client medium --input /tmp/zoom-transcript.txt
+# 【初期投入】資料がない場合の対話型ヒアリング（17問）
+npm run agent -- run discovery --client acme --dry-run
 
-# reporter を本実行（case の全成果物から週次レポート生成）
+# 【運用】会議録音 → 議事録
+npm run agent -- run scribe --client medium --input ~/Downloads/zoom-2026-05-15.vtt
+
+# 【運用】週次報告書生成
 npm run agent -- run reporter --client medium
 
 # ヘルプ
 npm run agent -- --help
 ```
+
+サンプル入力で intake をデモる：
+
+```bash
+npm run agent -- run intake --client spring-foods --input scripts/agents/samples/sample-rfp.md --dry-run
+```
+
+→ 春日フーズの架空 RFP（受発注システム刷新案件）を読み込んで、charter / wbs / stakeholders 等を構造化する流れを実演。
 
 ## ファイル構成
 
