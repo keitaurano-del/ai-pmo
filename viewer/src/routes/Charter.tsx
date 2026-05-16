@@ -43,11 +43,19 @@ export default function Charter() {
 
   return (
     <div className="space-y-4">
-      <div>
-        <h1 className="text-xl font-bold">プロジェクト憲章 / コンテキスト</h1>
-        <p className="text-sm text-slate-500">人間が作成・管理。AI PMO は読み込みコンテキストとして利用</p>
+      <div className="flex items-start justify-between flex-wrap gap-3">
+        <div>
+          <h1 className="text-xl font-bold">プロジェクト憲章 / コンテキスト</h1>
+          <p className="text-sm text-slate-500">人間が作成・管理。AI PMO は読み込みコンテキストとして利用</p>
+        </div>
+        <button
+          onClick={() => window.print()}
+          className="text-sm px-3 py-1.5 rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 no-print"
+        >
+          🖨 印刷/PDF
+        </button>
       </div>
-      <div className="inline-flex rounded-lg border border-slate-200 bg-white overflow-hidden">
+      <div className="inline-flex rounded-lg border border-slate-200 bg-white overflow-hidden no-print">
         {tabs.map((t) => (
           <button
             key={t.key}

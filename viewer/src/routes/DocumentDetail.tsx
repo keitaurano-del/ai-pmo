@@ -32,9 +32,18 @@ export default function DocumentDetail({ kind }: Props) {
           {doc.date && <span className="font-mono text-brand-700 mr-2">{doc.date}</span>}
           <code className="text-slate-500">{doc.filename}</code>
         </div>
-        <Link to={backTo} className="text-sm text-brand-600 hover:underline">
-          ← {backLabel}
-        </Link>
+        <div className="flex items-center gap-3 no-print">
+          <button
+            onClick={() => window.print()}
+            className="text-sm px-3 py-1.5 rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-slate-50"
+            title="PDF として保存"
+          >
+            🖨 印刷/PDF
+          </button>
+          <Link to={backTo} className="text-sm text-brand-600 hover:underline">
+            ← {backLabel}
+          </Link>
+        </div>
       </div>
       <div className="card p-6">
         <Markdown source={doc.body} />

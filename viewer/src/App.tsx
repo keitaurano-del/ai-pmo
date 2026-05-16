@@ -11,6 +11,7 @@ import Reports from './routes/Reports';
 import Charter from './routes/Charter';
 import DocumentDetail from './routes/DocumentDetail';
 import Methodology from './routes/Methodology';
+import Operations from './routes/Operations';
 import { DEFAULT_CASE } from './lib/data';
 
 export default function App() {
@@ -19,6 +20,7 @@ export default function App() {
       <Route element={<Layout />}>
         <Route index element={<Navigate to={`/${DEFAULT_CASE}`} replace />} />
         <Route path="/methodology" element={<Methodology />} />
+        <Route path="/operations" element={<Operations />} />
         <Route path=":caseSlug" element={<Dashboard />} />
         <Route path=":caseSlug/wbs" element={<WBS />} />
         <Route path=":caseSlug/schedule" element={<Schedule />} />

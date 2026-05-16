@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { getCase } from '@/lib/data';
 import { Markdown } from '@/lib/markdown';
 import { EmptyState } from '@/components/EmptyState';
+import { exportIssues } from '@/lib/exporters';
 
 function priorityBadge(p: string) {
   if (p === 'High') return <span className="badge badge-red">High</span>;
@@ -77,7 +78,21 @@ export default function Issues() {
             watcher-agent + triager-agent が日次更新 · Total {stats.total}（Open {stats.open} / Closed {stats.closed}）
           </p>
         </div>
-        <div className="flex items-center gap-3 flex-wrap">
+        <div className="flex items-center gap-3 flex-wrap no-print">
+          <button
+            onClick={() => exportIssues(c)}
+            className="text-sm px-3 py-1.5 rounded-lg border border-emerald-300 bg-white text-emerald-700 hover:bg-emerald-50"
+            title="Excel に書き出し"
+          >
+            📊 Excel
+          </button>
+          <button
+            onClick={() => window.print()}
+            className="text-sm px-3 py-1.5 rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-slate-50"
+            title="ブラウザの印刷機能で PDF 保存"
+          >
+            🖨 印刷/PDF
+          </button>
           <label className="text-sm flex items-center gap-2">
             <input type="checkbox" checked={showClosed} onChange={(e) => setShowClosed(e.target.checked)} />
             Closed を含める

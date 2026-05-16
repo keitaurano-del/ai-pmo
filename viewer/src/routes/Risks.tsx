@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { getCase } from '@/lib/data';
 import { Markdown } from '@/lib/markdown';
 import { EmptyState } from '@/components/EmptyState';
+import { exportRisks } from '@/lib/exporters';
 
 export default function Risks() {
   const { caseSlug } = useParams();
@@ -24,11 +25,29 @@ export default function Risks() {
 
   return (
     <div className="space-y-4">
-      <div>
-        <h1 className="text-xl font-bold">リスク台帳</h1>
-        <p className="text-sm text-slate-500">
-          watcher-agent が予兆検知 · PMO 担当が週次レビュー · 室長が週次承認
-        </p>
+      <div className="flex items-start justify-between flex-wrap gap-3">
+        <div>
+          <h1 className="text-xl font-bold">リスク台帳</h1>
+          <p className="text-sm text-slate-500">
+            watcher-agent が予兆検知 · PMO 担当が週次レビュー · 室長が週次承認
+          </p>
+        </div>
+        <div className="flex items-center gap-3 no-print">
+          {risks && (
+            <button
+              onClick={() => exportRisks(c)}
+              className="text-sm px-3 py-1.5 rounded-lg border border-emerald-300 bg-white text-emerald-700 hover:bg-emerald-50"
+            >
+              📊 Excel
+            </button>
+          )}
+          <button
+            onClick={() => window.print()}
+            className="text-sm px-3 py-1.5 rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-slate-50"
+          >
+            🖨 印刷/PDF
+          </button>
+        </div>
       </div>
 
       {risks && (

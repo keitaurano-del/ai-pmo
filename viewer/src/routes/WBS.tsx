@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getCase, WbsRow } from '@/lib/data';
 import { EmptyState } from '@/components/EmptyState';
+import { exportWbs } from '@/lib/exporters';
 
 type ViewMode = 'tree' | 'table';
 
@@ -99,7 +100,21 @@ export default function WBS() {
           <h1 className="text-xl font-bold">WBS</h1>
           <p className="text-sm text-slate-500">全 {wbsFlat.length} 行 · reporter-agent が週次更新</p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 no-print">
+          <button
+            onClick={() => exportWbs(c)}
+            className="text-sm px-3 py-1.5 rounded-lg border border-emerald-300 bg-white text-emerald-700 hover:bg-emerald-50"
+            title="Excel に書き出し"
+          >
+            📊 Excel
+          </button>
+          <button
+            onClick={() => window.print()}
+            className="text-sm px-3 py-1.5 rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-slate-50"
+            title="ブラウザの印刷機能で PDF 保存"
+          >
+            🖨 印刷/PDF
+          </button>
           <div className="inline-flex rounded-lg border border-slate-200 bg-white overflow-hidden">
             <button
               className={`px-3 py-1.5 text-sm ${mode === 'tree' ? 'bg-brand-600 text-white' : 'text-slate-700'}`}

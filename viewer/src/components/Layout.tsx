@@ -6,7 +6,8 @@ export default function Layout() {
   const navigate = useNavigate();
   const location = useLocation();
   const current = getCase(caseSlug ?? DEFAULT_CASE);
-  const isMethodology = location.pathname.startsWith('/methodology');
+  const isGlobalPage =
+    location.pathname.startsWith('/methodology') || location.pathname.startsWith('/operations');
 
   const nav = [
     { to: `/${current.slug}`, label: 'ダッシュボード', end: true },
@@ -19,12 +20,13 @@ export default function Layout() {
     { to: `/${current.slug}/reports`, label: '報告書' },
     { to: `/${current.slug}/charter`, label: '憲章/コンテキスト' },
     { to: '/methodology', label: 'Methodology' },
+    { to: '/operations', label: '運営ガイド' },
   ];
 
   const onCaseChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newSlug = e.target.value;
     // 現在 sub-page にいる場合、できれば同じ sub-page に遷移
-    if (isMethodology) {
+    if (isGlobalPage) {
       navigate(`/${newSlug}`);
       return;
     }
@@ -35,7 +37,7 @@ export default function Layout() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="border-b border-slate-200 bg-white sticky top-0 z-30">
+      <header className="border-b border-slate-200 bg-white sticky top-0 z-30 no-print">
         <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between gap-4 flex-wrap">
           <div className="flex items-center gap-3">
             <div className="h-9 w-9 rounded-lg bg-brand-600 text-white grid place-items-center font-bold text-sm">
@@ -61,11 +63,11 @@ export default function Layout() {
               <label htmlFor="case-select" className="text-slate-500 text-xs">ケース:</label>
               <select
                 id="case-select"
-                value={isMethodology ? '' : current.slug}
+                value={isGlobalPage ? '' : current.slug}
                 onChange={onCaseChange}
                 className="border border-slate-200 rounded-lg px-2 py-1.5 bg-white text-sm min-w-[180px]"
               >
-                {isMethodology && <option value="">(Methodology)</option>}
+                {isGlobalPage && <option value="">(共通ページ)</option>}
                 {caseList.map((c) => (
                   <option key={c.slug} value={c.slug}>
                     {c.slug === 'medium' ? '★ ' : ''}{c.displayName} ({c.slug})
@@ -99,7 +101,7 @@ export default function Layout() {
           <Outlet />
         </div>
       </main>
-      <footer className="border-t border-slate-200 bg-white">
+      <footer className="border-t border-slate-200 bg-white no-print">
         <div className="max-w-7xl mx-auto px-6 py-4 text-xs text-slate-500 flex justify-between flex-wrap gap-2">
           <div>
             AI PMO ビューワー · {caseList.length} ケース読み込み済 · データソース:{' '}
